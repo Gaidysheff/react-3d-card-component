@@ -11,7 +11,7 @@ import CardDisplay from "./CardDisplay.tsx";
 import CardForm from "./CardForm.tsx";
 
 interface FormProps {
-  onSubmitData: (data: Record<string, string>) => any;
+  onSubmitData: (data: Record<string, string>) => Promise<any>;
 }
 
 const bankCardSchema = z.object({
