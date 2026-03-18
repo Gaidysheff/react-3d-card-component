@@ -24,6 +24,7 @@ import {
 import { Button } from "./../ui/button";
 import { Input } from "./../ui/input";
 import { CURRENT_YEAR } from "./../../lib/utils.ts";
+
 import {
   useEffect,
   type Dispatch,
@@ -318,7 +319,9 @@ const CardForm = ({
             </div>
           </div>
           <Field orientation="horizontal">
-            <Button type="button" variant="outline" asChild></Button>
+            <Button type="button" variant="outline">
+              Cancel
+            </Button>
             <bankCardForm.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
