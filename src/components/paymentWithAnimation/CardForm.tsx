@@ -287,7 +287,7 @@ const CardForm = ({
                 children={(field) => (
                   <div className="w-full flex flex-col items-end relative">
                     <FieldLabel htmlFor="cvc">
-                      <p className="w-full">CVC/CVV/CVP</p>
+                      <p className="w-full whitespace-nowrap">CVC/CVV/CVP</p>
                     </FieldLabel>
                     <Input
                       className="text-center"
