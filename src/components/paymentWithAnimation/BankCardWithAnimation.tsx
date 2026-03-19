@@ -4,7 +4,7 @@ import { useForm, useStore, type AnyFieldApi } from "@tanstack/react-form";
 import { z } from "zod";
 import "./style.css";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 
 import { CURRENT_YEAR } from "./../../lib/utils.ts";
 import CardDisplay from "./CardDisplay.tsx";
@@ -111,14 +111,14 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
     bankCardForm.validate("change");
   };
 
-  const submitHandler = (event: FormEvent) => {
+  const submitHandler = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     bankCardForm.handleSubmit();
   };
 
   // ====================== Звук перелистывания =================================
   const playSwoosh = () => {
-    const audio = new Audio("/public/page-flip-sound.mp3");
+    const audio = new Audio("/page-flip-sound.mp3");
     // Путь к файлу в папке public
 
     audio.volume = 0.3; // Не делайте слишком громко
@@ -134,84 +134,86 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
   }, [isFlipped]);
 
   return (
-    <div className="grid lg:grid-cols-2 gap-6">
-      {/* --------- Card Display --------- */}
+    <>
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* --------- Card Display --------- */}
 
-      <div className=" z-2 flex justify-center items-center overflow-hidden w-full h-auto sm:h-[16.5rem]">
-        <div
-          className="origin-center transition-transform
-          scale-[0.6] 2xsm:scale-[0.72] xsm:scale-[0.95] sm:scale-100"
-        >
-          <CardDisplay
-            isFlipped={isFlipped}
-            cardType={cardType}
-            formValues={formValues}
-            monthTouched={monthTouched}
-            yearTouched={yearTouched}
+        <div className=" z-2 flex justify-center items-center overflow-hidden w-full h-auto sm:h-[16.5rem]">
+          <div
+            className="origin-center transition-transform
+            scale-[0.6] 2xsm:scale-[0.72] xsm:scale-[0.95] sm:scale-100"
+          >
+            <CardDisplay
+              isFlipped={isFlipped}
+              cardType={cardType}
+              formValues={formValues}
+              monthTouched={monthTouched}
+              yearTouched={yearTouched}
+            />
+          </div>
+        </div>
+
+        {/* Настоящий скрытый инпут поверх всей карты или под ней */}
+        <input
+          type="tel"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
+          maxLength={19}
+          value={formValues.cardNumber}
+          onChange={(e) => {
+            const val = e.target.value.replace(/\D/g, "");
+            updateField("cardNumber", val);
+            // bankCardForm.setFieldValue("cardNumber", value);
+            // это тот же update
+          }}
+        />
+        <input
+          type="tel"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
+          maxLength={30}
+          value={formValues.userName}
+          onChange={(e) => {
+            updateField("userName", e.target.value);
+          }}
+        />
+        <input
+          type="tel"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
+          maxLength={2}
+          value={formValues.month}
+          onChange={(e) => {
+            updateField("month", e.target.value);
+          }}
+        />
+        <input
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
+          type="tel"
+          maxLength={2}
+          value={formValues.year}
+          onChange={(e) => {
+            updateField("year", e.target.value);
+          }}
+        />
+        <input
+          type="tel"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
+          maxLength={3}
+          value={formValues.cvc}
+          onChange={(e) => {
+            updateField("cvc", e.target.value);
+          }}
+        />
+        {/* --------- Card Form --------- */}
+        <div className="scale-[0.9] 2xsm:scale-[0.95] xsm:scale-100">
+          <CardForm
+            onSubmit={submitHandler}
+            bankCardForm={bankCardForm}
+            setIsFlipped={setIsFlipped}
+            setCardType={setCardType}
+            onFieldChange={updateField}
           />
         </div>
       </div>
-
-      {/* Настоящий скрытый инпут поверх всей карты или под ней */}
-      <input
-        type="tel"
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
-        maxLength={19}
-        value={formValues.cardNumber}
-        onChange={(e) => {
-          const val = e.target.value.replace(/\D/g, "");
-          updateField("cardNumber", val);
-          // bankCardForm.setFieldValue("cardNumber", value);
-          // это тот же update
-        }}
-      />
-      <input
-        type="tel"
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
-        maxLength={30}
-        value={formValues.userName}
-        onChange={(e) => {
-          updateField("userName", e.target.value);
-        }}
-      />
-      <input
-        type="tel"
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
-        maxLength={2}
-        value={formValues.month}
-        onChange={(e) => {
-          updateField("month", e.target.value);
-        }}
-      />
-      <input
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
-        type="tel"
-        maxLength={2}
-        value={formValues.year}
-        onChange={(e) => {
-          updateField("year", e.target.value);
-        }}
-      />
-      <input
-        type="tel"
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-0"
-        maxLength={3}
-        value={formValues.cvc}
-        onChange={(e) => {
-          updateField("cvc", e.target.value);
-        }}
-      />
-      {/* --------- Card Form --------- */}
-      <div className="scale-[0.9] 2xsm:scale-[0.95] xsm:scale-100">
-        <CardForm
-          onSubmit={submitHandler}
-          bankCardForm={bankCardForm}
-          setIsFlipped={setIsFlipped}
-          setCardType={setCardType}
-          onFieldChange={updateField}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

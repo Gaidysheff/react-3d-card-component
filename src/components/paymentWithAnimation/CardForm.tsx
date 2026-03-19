@@ -28,7 +28,7 @@ import { CURRENT_YEAR } from "./../../lib/utils.ts";
 import {
   useEffect,
   type Dispatch,
-  type FormEvent,
+  type SyntheticEvent,
   type SetStateAction,
 } from "react";
 
@@ -45,7 +45,7 @@ interface FormProps {
   setCardType: Dispatch<SetStateAction<string>>;
   onFieldChange: (field: keyof BankCardSchemaType, value: string) => void;
   bankCardForm: AnyReactForm<BankCardSchemaType>;
-  onSubmit: (event: FormEvent) => void;
+  onSubmit: (event: SyntheticEvent<HTMLFormElement>) => void;
 }
 
 export function CvcBubbleError({ field }: { field: AnyFieldApi }) {

@@ -1,73 +1,31 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 💳 **Interactive 3D Payment Card Form**
 
-Currently, two official plugins are available:
+Профессиональный компонент формы оплаты с живой визуализацией банковской карты, глубокой валидацией и интеграцией с бэкендом.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## **🚀 Основные возможности (Features)**
 
-## React Compiler
+- 3D Анимация и Визуализация:
+  - Интерактивный разворот: Карта автоматически поворачивается на 180° при переходе к полю CVC и обратно.
+  - Живой дисплей: Данные (номер, имя, дата) мгновенно отображаются на карте по мере ввода.
+  - Эффект эмбоссирования (Embossed Text): Реалистичный объемный шрифт с тенями и светом, имитирующий настоящий пластик.
+  - Динамические блики (Shine Effect): Анимированный перелив света на поверхности карты при наведении.
+  - Glow-подсветка: Мягкое свечение активного поля на дисплее карты при фокусе в соответствующий инпут формы.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Умная Валидация (TanStack Form + Zod):
+  - Двойной стандарт: Поддержка карт на 16 и 19 цифр (МИР/Maestro).
+  - Валидация "на лету": Проверка формата с задержкой (Debounce), чтобы не спамить ошибками во время печати.
+  - Умные уведомления: Классические ошибки под инпутами и всплывающие Bubble-подсказки для узких полей (CVC).
+  - Строгий контроль: Блокировка кнопки оплаты до полного соответствия всем правилам безопасности.
+- Технологический стек и UX:
+  - Синхронизация с Backend: Интеграция с Django REST Framework для безопасного расчета суммы по cart_code.
+  - Масштабируемость: Использование CSS scale() для идеального отображения карты на любых мобильных устройствах (Responsive Design).
+  - Безопасность: Использование криптограмм (CloudPayments/Tinkoff logic) — данные карты не хранятся в открытом виде на сервере.
+  - Автоматизация: Автоматический перевод имени владельца в UPPERCASE и форматирование даты.
 
-## Expanding the ESLint configuration
+## 🎨 Advanced Theming:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Full OKLCH color space integration.
+- Real-time "Hue" slider that recalculates all 5 brand shades (Lighter to Darker) instantly.
+- Persistent settings via LocalStorage.

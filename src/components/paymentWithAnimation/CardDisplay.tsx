@@ -3,7 +3,7 @@ import CardNumber from "./CardNumber.tsx";
 import CardVerificationCode from "./CardVerificationCode.tsx";
 import Expiration from "./Expiration.tsx";
 import HolderName from "./HolderName.tsx";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "../../lib/utils.ts";
 
 type Props = {
   isFlipped: boolean;
