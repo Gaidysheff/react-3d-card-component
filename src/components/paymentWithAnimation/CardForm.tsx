@@ -11,7 +11,13 @@ import RuPay from "@/assets/images/payments/ru_pay.svg";
 import UnionPay from "@/assets/images/payments/union_pay.svg";
 import Visa from "@/assets/images/payments/visa.svg";
 import type { AnyFieldApi } from "@tanstack/react-form";
-
+import { Info } from "lucide-react";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Field, FieldGroup, FieldLabel } from "./../ui/field";
 import {
   Select,
@@ -23,7 +29,7 @@ import {
 
 import { Button } from "./../ui/button";
 import { Input } from "./../ui/input";
-import { CURRENT_YEAR } from "./../../lib/utils.ts";
+import { CURRENT_YEAR } from "@/lib/utilities.ts";
 
 import {
   useEffect,
@@ -32,7 +38,7 @@ import {
   type SetStateAction,
 } from "react";
 
-import { type AnyReactForm } from "./../../lib/types.ts";
+import { type AnyReactForm } from "@/lib/types.ts";
 import { useStore } from "@tanstack/react-form";
 
 import {
@@ -286,8 +292,32 @@ const CardForm = ({
                 name="cvc"
                 children={(field) => (
                   <div className="w-full flex flex-col items-end relative">
-                    <FieldLabel htmlFor="cvc">
+                    {/* <FieldLabel htmlFor="cvc">
                       <p className="w-full whitespace-nowrap">CVC/CVV/CVP</p>
+                    </FieldLabel> */}
+                    <FieldLabel
+                      htmlFor="cvc"
+                      className="flex items-center gap-1"
+                    >
+                      CVC/CVV/CVP
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info
+                              className="size-3.5 text-myMainColor
+                              opacity-50 cursor-help hover:opacity-100
+                              transition-opacity"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent
+                            side="top"
+                            className="max-w-[200px] text-xs"
+                          >
+                            Это 3-значный код безопасности на обратной стороне
+                            вашей карты.
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </FieldLabel>
                     <Input
                       className="text-center"

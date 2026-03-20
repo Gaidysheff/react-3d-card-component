@@ -4,9 +4,9 @@ import { useForm, useStore, type AnyFieldApi } from "@tanstack/react-form";
 import { z } from "zod";
 import "./style.css";
 
-import { useEffect, useState, type SyntheticEvent } from "react";
+import { useEffect, useRef, useState, type SyntheticEvent } from "react";
 
-import { CURRENT_YEAR } from "./../../lib/utils.ts";
+import { CURRENT_YEAR } from "@/lib/utilities.ts";
 import CardDisplay from "./CardDisplay.tsx";
 import CardForm from "./CardForm.tsx";
 
@@ -116,14 +116,24 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
     bankCardForm.handleSubmit();
   };
 
-  // ====================== Звук перелистывания =================================
-  const playSwoosh = () => {
-    const audio = new Audio("/page-flip-sound.mp3");
-    // Путь к файлу в папке public
+  // ==================== Звук перелистывания ========================
+  // Создаем реф для аудио, чтобы он жил весь цикл компонента
+  const swooshAudio = useRef<HTMLAudioElement | null>(null);
 
-    audio.volume = 0.3; // Не делайте слишком громко
-    audio.play().catch(() => {}); // Игнорируем ошибку, если браузер блокирует звук
+  const playSwoosh = () => {
+    if (swooshAudio.current) {
+      swooshAudio.current.currentTime = 0;
+      // Сбрасываем на начало, если кликнули быстро
+      swooshAudio.current.volume = 0.3;
+      swooshAudio.current.play().catch(() => {});
+    }
   };
+
+  useEffect(() => {
+    // Инициализируем и предзагружаем
+    swooshAudio.current = new Audio("/page-flip-sound.mp3");
+    swooshAudio.current.load(); // Принудительная загрузка в кэш
+  }, []);
 
   // В useEffect, который следит за разворотом
   useEffect(() => {
@@ -135,13 +145,13 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
 
   return (
     <>
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-2 xsm:gap-6 lg:gap-10">
         {/* --------- Card Display --------- */}
 
         <div className=" z-2 flex justify-center items-center overflow-hidden w-full h-auto sm:h-[16.5rem]">
           <div
-            className="origin-center transition-transform
-            scale-[0.6] 2xsm:scale-[0.72] xsm:scale-[0.95] sm:scale-100"
+            className="origin-center transition-transform duration-700
+          scale-[0.6] 2xsm:scale-[0.72] xsm:scale-[0.95] sm:scale-100"
           >
             <CardDisplay
               isFlipped={isFlipped}
@@ -203,7 +213,7 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
           }}
         />
         {/* --------- Card Form --------- */}
-        <div className="scale-[0.9] 2xsm:scale-[0.95] xsm:scale-100">
+        <div className="scale-[0.8] 2xsm:scale-[0.85] xsm:scale-100">
           <CardForm
             onSubmit={submitHandler}
             bankCardForm={bankCardForm}

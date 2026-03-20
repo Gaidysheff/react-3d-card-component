@@ -78,7 +78,7 @@ function App() {
         </div>
       </div>
       {isSent && (
-        <p className="text-3xl text-red-500 italic text-center">
+        <p className="text-3xl text-red-500 italic text-center scale-[0.8] 2xsm:scale-[0.85] xsm:scale-100">
           Данные вашей карты условно переданы на сервер
         </p>
       )}

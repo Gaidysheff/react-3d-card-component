@@ -3,7 +3,7 @@ import CardNumber from "./CardNumber.tsx";
 import CardVerificationCode from "./CardVerificationCode.tsx";
 import Expiration from "./Expiration.tsx";
 import HolderName from "./HolderName.tsx";
-import { cn } from "../../lib/utils.ts";
+import { cn } from "@/lib/utils.ts";
 
 type Props = {
   isFlipped: boolean;
@@ -30,14 +30,13 @@ const CardDisplay = ({
   return (
     <div
       className={cn(
-        "transition transform-3d ease-in-out duration-800 relative text-white w-[26rem] h-[16.5rem]",
+        "transition transform-3d ease-in-out duration-500 relative text-white w-[26rem] h-[16.5rem]",
         isFlipped ? "rotate-y-180" : "",
       )}
     >
       {/* --------- Front side of the card --------- */}
       <div
-        className="
-          backface-hidden !absolute !inset-0 w-full h-full
+        className="backface-hidden !absolute !inset-0 w-full h-full
             bg-myMainColorDark border-2 border-myMainColorDarker rounded-2xl p-8
             flex flex-col gap-2 z-1 overflow-hidden relative card-container
             before:content-[''] before:absolute before:h-[600px] before:w-[600px]
