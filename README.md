@@ -4,7 +4,7 @@
 
 [![Live Demo](https://img.shields.io)](https://bankcard3d.vercel.app)
 
-![Preview](./docs/card_3d.png)
+![Preview](./docs/cover.png)
 
 > **Live Demo:** [https://bankcard3d.vercel.app](https://bankcard3d.vercel.app)
 
@@ -30,8 +30,21 @@
   - Безопасность: Использование криптограмм (CloudPayments/Tinkoff logic) — данные карты не хранятся в открытом виде на сервере.
   - Автоматизация: Автоматический перевод имени владельца в UPPERCASE и форматирование даты.
 
-## 🎨 Advanced Theming:
+### 🎨 Advanced Theming:
 
 - Full OKLCH color space integration.
 - Real-time "Hue" slider that recalculates all 5 brand shades (Lighter to Darker) instantly.
 - Persistent settings via LocalStorage.
+
+### 🌍 Internationalization (i18n):
+
+- Dual language support (EN/RU).
+- Real-time error message translation (Zod keys mapping).
+- UI adapts instantly to the selected locale.
+
+### 🛠 Tech Stack Details
+
+- **TanStack Form:** Выбран за типобезопасность (TypeScript-first) и уникальную архитектуру подписок. В отличие от стандартных решений, он позволяет обновлять только конкретные поля, что критически важно для плавности анимации 3D-карты при вводе.
+- **Zod:** Используется для декларативной валидации. Позволяет описывать сложные правила (например, проверку 16 ИЛИ 19 цифр) одной цепочкой методов. Интеграция с TanStack Form обеспечивает мгновенную реакцию интерфейса на ошибки.
+- **Framer Motion:** Применен для управления сложными состояниями анимации бабблов и плавных переходов между языковыми локалями.
+- **OKLCH Color Space:** Использование современного цветового пространства позволяет динамически вычислять гармоничные оттенки (Light/Dark) от любого базового цвета, выбранного пользователем.

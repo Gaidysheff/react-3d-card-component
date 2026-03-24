@@ -17,7 +17,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui-modified/tooltip";
 import { Field, FieldGroup, FieldLabel } from "./../ui/field";
 import {
   Select,
@@ -28,7 +28,9 @@ import {
 } from "./../ui/select.tsx";
 
 import { Button } from "./../ui/button";
-import { Input } from "./../ui/input";
+
+import { Input } from "./../ui-modified/input";
+
 import { CURRENT_YEAR } from "@/lib/utilities.ts";
 
 import {
@@ -52,12 +54,20 @@ interface FormProps {
   onFieldChange: (field: keyof BankCardSchemaType, value: string) => void;
   bankCardForm: AnyReactForm<BankCardSchemaType>;
   onSubmit: (event: SyntheticEvent<HTMLFormElement>) => void;
+  t: Record<string, string>;
+  e: Record<string, string>;
 }
 
-export function CvcBubbleError({ field }: { field: AnyFieldApi }) {
-  const error = field.state.meta.errors[0]?.message;
+export function CvcBubbleError({ field, e }: { field: AnyFieldApi; e: any }) {
+  // Достаем саму ошибку (обычно это первый элемент массива)
+  const error = field.state.meta.errors[0];
+  // Вытаскиваем ключ (если это объект Zod, ключ будет в .message)
+  const errorKey = typeof error === "string" ? error : error?.message;
 
-  if (!field.state.meta.isTouched || !error) return null;
+  if (!field.state.meta.isTouched || !errorKey) return null;
+
+  // Ищем перевод. Если не нашли — выводим сам ключ (для отладки)
+  const errorMessage = e?.[errorKey] || errorKey;
 
   return (
     <div
@@ -68,7 +78,7 @@ export function CvcBubbleError({ field }: { field: AnyFieldApi }) {
         className="bg-destructive text-white text-sm px-2 py-1
       rounded-md whitespace-nowrap shadow-lg relative"
       >
-        {error}
+        {errorMessage}
         <div
           className="absolute -bottom-1 w-2 h-2 bg-destructive rotate-45
         left-1/2 -translate-x-1/2"
@@ -84,6 +94,8 @@ const CardForm = ({
   setIsFlipped,
   setCardType,
   onFieldChange,
+  t,
+  e,
 }: FormProps) => {
   const formValues = useStore(bankCardForm.store, (state) => state.values);
 
@@ -157,7 +169,7 @@ const CardForm = ({
             name="cardNumber"
             children={(field) => (
               <div>
-                <FieldLabel htmlFor="cardNumber">Number</FieldLabel>
+                <FieldLabel htmlFor="cardNumber">{t.number}</FieldLabel>
                 <Input
                   id="cardNumber"
                   autoComplete="cc-number"
@@ -169,16 +181,26 @@ const CardForm = ({
                       onFieldChange("cardNumber", val);
                     }
                   }}
+                  // Превращаем ключи в переведенные строки перед передачей в Input
                   errors={
-                    field.state.meta.isTouched ? field.state.meta.errors : []
+                    field.state.meta.isTouched
+                      ? field.state.meta.errors.map((err: any) => {
+                          const key =
+                            typeof err === "string" ? err : err?.message;
+                          return e[key] || key;
+                        })
+                      : []
                   }
+                  // errors={
+                  //   field.state.meta.isTouched ? field.state.meta.errors : []
+                  // }
                   onClick={() => setIsFlipped(false)}
                   inputMode="numeric"
-                  placeholder="16 or 19 digits"
+                  placeholder={t.ph_number}
                   pattern="(\d{16}|\d{19})"
                   required
                 />
-                <FieldInfo field={field} />
+                <FieldInfo field={field} e={e} />
               </div>
             )}
           />
@@ -187,7 +209,7 @@ const CardForm = ({
             name="userName"
             children={(field) => (
               <div>
-                <FieldLabel htmlFor="userName">Name</FieldLabel>
+                <FieldLabel htmlFor="userName">{t.name}</FieldLabel>
                 <Input
                   id="userName"
                   autoComplete="cc-name"
@@ -198,14 +220,21 @@ const CardForm = ({
                     field.handleChange(val);
                     onFieldChange("userName", val);
                   }}
+                  // Превращаем ключи в переведенные строки перед передачей в Input
                   errors={
-                    field.state.meta.isTouched ? field.state.meta.errors : []
+                    field.state.meta.isTouched
+                      ? field.state.meta.errors.map((err: any) => {
+                          const key =
+                            typeof err === "string" ? err : err?.message;
+                          return e[key] || key;
+                        })
+                      : []
                   }
                   onClick={() => setIsFlipped(false)}
-                  placeholder="card holder's name"
+                  placeholder={t.ph_name}
                   required
                 />
-                <FieldInfo field={field} />
+                <FieldInfo field={field} e={e} />
               </div>
             )}
           />
@@ -217,7 +246,7 @@ const CardForm = ({
                 children={(field) => (
                   <Field>
                     <div>
-                      <FieldLabel htmlFor="form-month">Month</FieldLabel>
+                      <FieldLabel htmlFor="form-month">{t.month}</FieldLabel>
                       <Select
                         value={field.state.value || "01"}
                         onValueChange={(val) => {
@@ -243,7 +272,7 @@ const CardForm = ({
                         </SelectContent>
                       </Select>
 
-                      <FieldInfo field={field} />
+                      <FieldInfo field={field} e={e} />
                     </div>
                   </Field>
                 )}
@@ -255,7 +284,7 @@ const CardForm = ({
                 children={(field) => (
                   <Field>
                     <div>
-                      <FieldLabel htmlFor="form-year">Year</FieldLabel>
+                      <FieldLabel htmlFor="form-year">{t.year}</FieldLabel>
 
                       <Select
                         value={field.state.value || String(CURRENT_YEAR)}
@@ -280,7 +309,7 @@ const CardForm = ({
                         </SelectContent>
                       </Select>
 
-                      <FieldInfo field={field} />
+                      <FieldInfo field={field} e={e} />
                     </div>
                   </Field>
                 )}
@@ -299,22 +328,23 @@ const CardForm = ({
                       htmlFor="cvc"
                       className="flex items-center gap-1"
                     >
-                      CVC/CVV/CVP
+                      <p className="w-full whitespace-nowrap">{t.cvc}</p>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Info
-                              className="size-3.5 text-myMainColor
+                              className="size-5 text-myMainColor
                               opacity-50 cursor-help hover:opacity-100
                               transition-opacity"
                             />
                           </TooltipTrigger>
                           <TooltipContent
                             side="top"
-                            className="max-w-[200px] text-xs"
+                            className="max-w-[160px] text-xs"
                           >
-                            Это 3-значный код безопасности на обратной стороне
-                            вашей карты.
+                            {t.cvc_bubble}
+                            {/* Это 3-значный код безопасности на обратной стороне
+                            вашей карты. */}
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -332,9 +362,14 @@ const CardForm = ({
 
                         onFieldChange("cvc", val);
                       }}
+                      // Превращаем ключи в переведенные строки перед передачей в Input
                       errors={
                         field.state.meta.isTouched
-                          ? field.state.meta.errors
+                          ? field.state.meta.errors.map((err: any) => {
+                              const key =
+                                typeof err === "string" ? err : err?.message;
+                              return e[key] || key;
+                            })
                           : []
                       }
                       onClick={() => setIsFlipped(true)}
@@ -342,7 +377,7 @@ const CardForm = ({
                       inputMode="numeric"
                       maxLength={3}
                     />
-                    <CvcBubbleError field={field} />
+                    <CvcBubbleError field={field} e={e} />
                   </div>
                 )}
               />
@@ -350,13 +385,13 @@ const CardForm = ({
           </div>
           <Field orientation="horizontal">
             <Button type="button" variant="outline">
-              Cancel
+              {t.cancel}
             </Button>
             <bankCardForm.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
                 <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                  {isSubmitting ? "..." : "Pay"}
+                  {isSubmitting ? "..." : t.pay}
                 </Button>
               )}
             />

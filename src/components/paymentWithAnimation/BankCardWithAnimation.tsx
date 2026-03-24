@@ -12,50 +12,58 @@ import CardForm from "./CardForm.tsx";
 
 interface FormProps {
   onSubmitData: (data: Record<string, string>) => Promise<any>;
+  t: Record<string, string>;
+  e: Record<string, string>;
+  lang: "en" | "ru";
 }
 
 const bankCardSchema = z.object({
   cardNumber: z
     .string()
-    .regex(/^\d+$/, { message: "number must contain only digits" })
+    .regex(/^\d+$/, { message: "only_digits" })
     .refine((val) => val.length === 16 || val.length === 19, {
-      message: "Must be 16 or 19 digits",
+      message: "no_of_digits",
     }),
   userName: z
     .string()
-    .min(1, { message: "Name is required" })
-    .min(2, { message: "Name must be at least 2 characters" })
-    .regex(/^[a-zA-Z\s]+$/, "String must contain only Latin letters"),
+    .min(1, { message: "required" })
+    .min(2, { message: "two_chars" })
+    // .min(2, { message: "Name must be at least 2 characters" })
+    .regex(/^[a-zA-Z\s]+$/, { message: "latin_chars" }),
   month: z.string().min(1),
   year: z.string().min(4),
   cvc: z
     .string()
-    .regex(/^\d+$/, { message: "cvc must contain only digits" })
-    .length(3, "CVC must be 3 digits"),
+    .regex(/^\d+$/, { message: "cvc_digits" })
+    // .regex(/^\d+$/, { message: "cvc must contain only digits" })
+    .length(3, { message: "cvc_three" }),
+  // .length(3, "CVC must be 3 digits"),
 });
 
 // Optional: Infer the TypeScript type from the schema for full type safety
 export type BankCardSchemaType = z.infer<typeof bankCardSchema>;
 
-export function FieldInfo({ field }: { field: AnyFieldApi }) {
+export function FieldInfo({ field, e }: { field: AnyFieldApi; e: any }) {
+  // Достаем саму ошибку (обычно это первый элемент массива)
+  const error = field.state.meta.errors[0];
+  // Вытаскиваем ключ (если это объект Zod, ключ будет в .message)
+  const errorKey = typeof error === "string" ? error : error?.message;
+
+  if (!field.state.meta.isTouched || !errorKey) return null;
+
+  // Ищем перевод. Если не нашли — выводим сам ключ (для отладки)
+  const errorMessage = e?.[errorKey] || errorKey;
+  // const errorMessage = e?.errors?.[errorKey] || errorKey;
+
   return (
-    <>
-      {field.state.meta.isTouched && !field.state.meta.isValid ? (
-        <em
-          className={
-            field.state.meta.errors.length ? "text-destructive text-sm" : ""
-          }
-        >
-          {field.state.meta.errors.map((err) => err.message)[0]}
-          {/* {field.state.meta.errors.map((err) => err.message).join(",")} */}
-        </em>
-      ) : null}
-      {field.state.meta.isValidating ? "Validating..." : null}
-    </>
+    <div className="h-4">
+      {/* Резервируем место, чтобы верстка не прыгала */}
+      <em className="text-destructive text-xs italic">{errorMessage}</em>
+    </div>
   );
 }
 
-const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
+const BankCardWithAnimation = ({ onSubmitData, t, e, lang }: FormProps) => {
   const bankCardForm = useForm({
     defaultValues: {
       cardNumber: "",
@@ -143,11 +151,16 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
     }
   }, [isFlipped]);
 
+  useEffect(() => {
+    // Принудительно запускаем валидацию при смене языка,
+    // чтобы ключи ошибок в стейте обновились мгновенно
+    bankCardForm.validate("change");
+  }, [lang]);
+
   return (
     <>
       <div className="grid lg:grid-cols-2 gap-2 xsm:gap-6 lg:gap-10">
         {/* --------- Card Display --------- */}
-
         <div className=" z-2 flex justify-center items-center overflow-hidden w-full h-auto sm:h-[16.5rem]">
           <div
             className="origin-center transition-transform duration-700
@@ -159,6 +172,7 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
               formValues={formValues}
               monthTouched={monthTouched}
               yearTouched={yearTouched}
+              t={t}
             />
           </div>
         </div>
@@ -220,6 +234,8 @@ const BankCardWithAnimation = ({ onSubmitData }: FormProps) => {
             setIsFlipped={setIsFlipped}
             setCardType={setCardType}
             onFieldChange={updateField}
+            t={t}
+            e={e}
           />
         </div>
       </div>

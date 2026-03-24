@@ -17,15 +17,16 @@ type Props = {
   };
   monthTouched: boolean | undefined;
   yearTouched: boolean | undefined;
+  t: Record<string, string>;
 };
 
 const CardDisplay = ({
   isFlipped,
   cardType,
   formValues,
-
   monthTouched,
   yearTouched,
+  t,
 }: Props) => {
   return (
     <div
@@ -52,13 +53,14 @@ const CardDisplay = ({
         <CardNumber value={formValues.cardNumber} />
 
         <div className="flex justify-between gap-2">
-          <HolderName value={formValues.userName} />
+          <HolderName value={formValues.userName} t={t} />
 
           <Expiration
             month={formValues.month}
             year={formValues.year}
             monthTouched={monthTouched}
             yearTouched={yearTouched}
+            t={t}
           />
         </div>
       </div>
@@ -76,7 +78,7 @@ const CardDisplay = ({
       >
         <div className="bg-black absolute left-0 right-0 top-[1.5rem] h-[3.75rem]"></div>
 
-        <CardVerificationCode value={formValues.cvc} />
+        <CardVerificationCode value={formValues.cvc} t={t} />
       </div>
     </div>
   );

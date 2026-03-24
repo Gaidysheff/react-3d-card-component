@@ -1,14 +1,16 @@
 interface Props {
   value: string;
+  t: Record<string, string>;
 }
 
-const HolderName = ({ value = "" }: Props) => {
+const HolderName = ({ value = "", t }: Props) => {
   const showLiveName = value.length > 0;
 
   return (
     <div className="flex flex-col min-w-[200px] gap-1">
       <div className="uppercase opacity-70 text-sm font-[Ubuntu]">
-        cardholder's name
+        {t.name_display}
+        {/* cardholder's name */}
       </div>
       <div
         className="text-white uppercase h-8 flex items-center font-[CreditCard]
@@ -16,7 +18,8 @@ const HolderName = ({ value = "" }: Props) => {
       >
         {!showLiveName ? (
           <span className="text-lg opacity-50 tracking-widest">
-            Your Name Here
+            {/* Your Name Here */}
+            {t.your_name}
           </span>
         ) : (
           <div

@@ -1,8 +1,9 @@
 interface Props {
   value: string;
+  t: Record<string, string>;
 }
 
-const CardVerificationCode = ({ value = "" }: Props) => {
+const CardVerificationCode = ({ value = "", t }: Props) => {
   const placeholders = Array.from({ length: 3 }, (_, i) => i);
 
   const cleanValue = value.toString().replace(/\s/g, "");
@@ -12,7 +13,7 @@ const CardVerificationCode = ({ value = "" }: Props) => {
       className="flex items-center justify-between gap-2 absolute 
       bottom-[6.9rem] right-[10rem]"
     >
-      <p className="uppercase text-sm">CVC/CVV/CVP</p>
+      <p className="uppercase text-sm">{t.cvc}</p>
       <div
         className="bg-white text-myMainColorDark rounded-xs p-2
         font-[Ubuntu] w-[10ch] text-sm h-[3rem]"
