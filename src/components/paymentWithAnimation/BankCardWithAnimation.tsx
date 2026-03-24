@@ -14,7 +14,7 @@ interface FormProps {
   onSubmitData: (data: Record<string, string>) => Promise<any>;
   t: Record<string, string>;
   e: Record<string, string>;
-  lang: "en" | "ru";
+  // lang: "en" | "ru";
 }
 
 const bankCardSchema = z.object({
@@ -63,7 +63,7 @@ export function FieldInfo({ field, e }: { field: AnyFieldApi; e: any }) {
   );
 }
 
-const BankCardWithAnimation = ({ onSubmitData, t, e, lang }: FormProps) => {
+const BankCardWithAnimation = ({ onSubmitData, t, e }: FormProps) => {
   const bankCardForm = useForm({
     defaultValues: {
       cardNumber: "",
@@ -151,11 +151,11 @@ const BankCardWithAnimation = ({ onSubmitData, t, e, lang }: FormProps) => {
     }
   }, [isFlipped]);
 
-  useEffect(() => {
-    // Принудительно запускаем валидацию при смене языка,
-    // чтобы ключи ошибок в стейте обновились мгновенно
-    bankCardForm.validate("change");
-  }, [lang]);
+  // useEffect(() => {
+  //   // Принудительно запускаем валидацию при смене языка,
+  //   // чтобы ключи ошибок в стейте обновились мгновенно
+  //   bankCardForm.validate("change");
+  // }, [lang]);
 
   return (
     <>

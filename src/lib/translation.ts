@@ -46,9 +46,9 @@ export const TRANSLATIONS = {
     year_display: "ГГ",
     // ------
     fill: "Заполните данные карты",
-    slider_hue: "Тон (Hue)",
-    slider_lightness: "Освещение (lightness)",
-    slider_chroma: "Насыщенность (chroma)",
+    slider_hue: "Тон",
+    slider_lightness: "Освещение",
+    slider_chroma: "Насыщенность",
     slider_reset: "Сбросить до исходного цвета",
     language: "Язык",
   },

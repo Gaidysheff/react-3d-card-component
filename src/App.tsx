@@ -40,6 +40,7 @@ function App() {
   } as React.CSSProperties;
 
   const CardWithAnimationDataHandler = (CardData: Record<string, string>) => {
+    console.log("🚀 ~ CardWithAnimationDataHandler ~ CardData:", CardData);
     setIsSent(true);
     return new Promise((r) => setTimeout(r, 2000));
   };
@@ -173,7 +174,7 @@ function App() {
             onSubmitData={CardWithAnimationDataHandler}
             t={t}
             e={e}
-            lang={lang}
+            // lang={lang}
           />
         </div>
       </div>
