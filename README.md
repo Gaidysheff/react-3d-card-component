@@ -1,50 +1,65 @@
-# React + TypeScript + Vite
+> **Live Demo:** [https://bankcard3d.vercel.app](https://bankcard3d.vercel.app)
 
-# 💳 **Interactive 3D Payment Card Form**
-
-[![Live Demo](https://img.shields.io)](https://bankcard3d.vercel.app)
+# 💳 Interactive 3D Bank Card Component (React + OKLCH)
 
 ![Preview](./docs/cover.png)
 
-> **Live Demo:** [https://bankcard3d.vercel.app](https://bankcard3d.vercel.app)
+A high-end, interactive 3D bank card component with real-time color customization and multi-language support. Built with performance and modern CSS in mind.
 
-Профессиональный компонент формы оплаты с живой визуализацией банковской карты, глубокой валидацией и интеграцией с бэкендом.
+[Live Demo on Vercel](https://bankcard3d.vercel.app) 🚀
 
-## **🚀 Основные возможности (Features)**
+---
 
-- 3D Анимация и Визуализация:
-  - Интерактивный разворот: Карта автоматически поворачивается на 180° при переходе к полю CVC и обратно.
-  - Живой дисплей: Данные (номер, имя, дата) мгновенно отображаются на карте по мере ввода.
-  - Эффект эмбоссирования (Embossed Text): Реалистичный объемный шрифт с тенями и светом, имитирующий настоящий пластик.
-  - Динамические блики (Shine Effect): Анимированный перелив света на поверхности карты при наведении.
-  - Glow-подсветка: Мягкое свечение активного поля на дисплее карты при фокусе в соответствующий инпут формы.
+## ✨ Features
 
-- Умная Валидация (TanStack Form + Zod):
-  - Двойной стандарт: Поддержка карт на 16 и 19 цифр (МИР/Maestro).
-  - Валидация "на лету": Проверка формата с задержкой (Debounce), чтобы не спамить ошибками во время печати.
-  - Умные уведомления: Классические ошибки под инпутами и всплывающие Bubble-подсказки для узких полей (CVC).
-  - Строгий контроль: Блокировка кнопки оплаты до полного соответствия всем правилам безопасности.
-- Технологический стек и UX:
-  - Синхронизация с Backend: Интеграция с Django REST Framework для безопасного расчета суммы по cart_code.
-  - Масштабируемость: Использование CSS scale() для идеального отображения карты на любых мобильных устройствах (Responsive Design).
-  - Безопасность: Использование криптограмм (CloudPayments/Tinkoff logic) — данные карты не хранятся в открытом виде на сервере.
-  - Автоматизация: Автоматический перевод имени владельца в UPPERCASE и форматирование даты.
+- **🔄 Realistic 3D Flip:** Smooth 700ms transition between front and back sides triggered by form focus (e.g., CVC field).
+- **🎨 OKLCH Dynamic Theming:** Real-time lightness, chroma, and hue adjustment via sliders. Derivative colors (Light/Dark) are calculated automatically.
+- **🌍 Multi-language Support:** Instant toggle between English and Russian, including real-time error message translation.
+- **✅ Robust Validation:** Powered by **TanStack Form** and **Zod** for type-safe, instant feedback.
+- **🔊 Sound Design:** Subtle audio feedback ("ticks") on slider adjustments for better UX.
 
-### 🎨 Advanced Theming:
+---
 
-- Full OKLCH color space integration.
-- Real-time "Hue" slider that recalculates all 5 brand shades (Lighter to Darker) instantly.
-- Persistent settings via LocalStorage.
+## 🛠 Tech Stack
 
-### 🌍 Internationalization (i18n):
+- **React 18 / Vite**
+- **Tailwind CSS v4** (Advanced 3D transforms)
+- **Framer Motion** (Layout animations & language toggle)
+- **TanStack Form & Zod** (State & Validation)
+- **Lucide React** (Icons)
 
-- Dual language support (EN/RU).
-- Real-time error message translation (Zod keys mapping).
-- UI adapts instantly to the selected locale.
+---
 
-### 🛠 Tech Stack Details
+## 🔧 Technical Highlights
 
-- **TanStack Form:** Выбран за типобезопасность (TypeScript-first) и уникальную архитектуру подписок. В отличие от стандартных решений, он позволяет обновлять только конкретные поля, что критически важно для плавности анимации 3D-карты при вводе.
-- **Zod:** Используется для декларативной валидации. Позволяет описывать сложные правила (например, проверку 16 ИЛИ 19 цифр) одной цепочкой методов. Интеграция с TanStack Form обеспечивает мгновенную реакцию интерфейса на ошибки.
-- **Framer Motion:** Применен для управления сложными состояниями анимации бабблов и плавных переходов между языковыми локалями.
-- **OKLCH Color Space:** Использование современного цветового пространства позволяет динамически вычислять гармоничные оттенки (Light/Dark) от любого базового цвета, выбранного пользователем.
+### Why OKLCH?
+
+Unlike HSL or RGB, **OKLCH** provides perceptually uniform brightness. This allows us to change the hue while maintaining the same visual "weight" of the card, making the UI feel professional and balanced.
+
+### TanStack Form Architecture
+
+We use a subscription-based model for form fields. This ensures that typing in the "Card Number" field **only** re-renders the card's number display, keeping the 60fps 3D animation perfectly smooth.
+
+---
+
+## 🚀 Getting Started
+
+1. **Clone & Install:**
+   ```bash
+   git clone https://github.com
+   cd react-3d-card-component
+   pnpm install
+   ```
+
+### 🇷🇺 Описание на русском (Russian Version)
+
+- **🔄** Интерактивный 3D-компонент банковской карты с динамической настройкой цветов в пространстве OKLCH. Плавный 3D-разворот при вводе CVC.
+- **🎨** Полный контроль над цветом (Тон, Насыщенность, Светлость).
+- **🌍** Переключение языков (RU/EN) «на лету».
+- **✅** Валидация через Zod и TanStack Form.
+- **🔊** Едва уловимая звуковая обратная связь («тиканье») при регулировке ползунков для улучшения пользовательского опыта.
+
+### 👤 Author
+
+Developed with ❤️ by **Gaidysheff**
+GitHub Profile

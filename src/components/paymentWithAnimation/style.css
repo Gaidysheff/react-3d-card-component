@@ -131,3 +131,43 @@
     transform: translateX(100%) skewX(-25deg);
   }
 }
+
+/* ================================================= */
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* .card-flipped {
+  transform: rotateY(180deg);
+} */
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform: translateZ(1px);
+  -webkit-transform: translateZ(1px);
+
+  -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+  mask-image: radial-gradient(circle, white 100%, black 100%);
+
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+
+  border-radius: 1rem !important;
+}
+
+.card-back {
+  transform: rotateY(180deg) translateZ(1px);
+}

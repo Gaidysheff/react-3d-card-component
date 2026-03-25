@@ -235,6 +235,9 @@ html {
   --font-rusHand: "Caveat", "sans-serif";
   --font-Comfort: "Comfortaa", "sans-serif";
   --font-rusOfficial: "RobotoFlex", "sans-serif";
+  /* Добавляем поддержку 3D поворотов в Tailwind 4 */
+  --transform-rotate-y-180: rotateY(180deg);
+  --transform-rotate-y-0: rotateY(0deg);
 }
 
 @utility container {

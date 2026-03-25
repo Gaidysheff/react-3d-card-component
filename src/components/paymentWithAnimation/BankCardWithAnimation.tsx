@@ -14,7 +14,6 @@ interface FormProps {
   onSubmitData: (data: Record<string, string>) => Promise<any>;
   t: Record<string, string>;
   e: Record<string, string>;
-  // lang: "en" | "ru";
 }
 
 const bankCardSchema = z.object({
@@ -28,16 +27,13 @@ const bankCardSchema = z.object({
     .string()
     .min(1, { message: "required" })
     .min(2, { message: "two_chars" })
-    // .min(2, { message: "Name must be at least 2 characters" })
     .regex(/^[a-zA-Z\s]+$/, { message: "latin_chars" }),
   month: z.string().min(1),
   year: z.string().min(4),
   cvc: z
     .string()
     .regex(/^\d+$/, { message: "cvc_digits" })
-    // .regex(/^\d+$/, { message: "cvc must contain only digits" })
     .length(3, { message: "cvc_three" }),
-  // .length(3, "CVC must be 3 digits"),
 });
 
 // Optional: Infer the TypeScript type from the schema for full type safety
@@ -151,20 +147,17 @@ const BankCardWithAnimation = ({ onSubmitData, t, e }: FormProps) => {
     }
   }, [isFlipped]);
 
-  // useEffect(() => {
-  //   // Принудительно запускаем валидацию при смене языка,
-  //   // чтобы ключи ошибок в стейте обновились мгновенно
-  //   bankCardForm.validate("change");
-  // }, [lang]);
-
   return (
     <>
       <div className="grid lg:grid-cols-2 gap-2 xsm:gap-6 lg:gap-10">
         {/* --------- Card Display --------- */}
-        <div className=" z-2 flex justify-center items-center overflow-hidden w-full h-auto sm:h-[16.5rem]">
+        <div
+          className="relative z-2 flex justify-center items-center 
+          overflow-hidden w-full h-auto sm:h-[16.5rem]"
+        >
           <div
-            className="origin-center transition-transform duration-700
-          scale-[0.6] 2xsm:scale-[0.72] xsm:scale-[0.95] sm:scale-100"
+            className="scale-[0.6] 2xsm:scale-[0.72] xsm:scale-[0.95] sm:scale-100
+            origin-center transition-transform"
           >
             <CardDisplay
               isFlipped={isFlipped}
