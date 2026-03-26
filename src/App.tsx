@@ -137,7 +137,10 @@ function App() {
         <p className="text-xs uppercase tracking-widest opacity-60">
           {t.language}
         </p>
-        <div className="flex bg-input/20 rounded-md border border-primary/50 relative">
+        <div
+          className="flex bg-input/20 rounded-md border border-primary/50
+          relative"
+        >
           {["en", "ru"].map((l) => (
             <button
               type="button"

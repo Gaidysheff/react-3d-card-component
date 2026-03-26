@@ -63,3 +63,7 @@ We use a subscription-based model for form fields. This ensures that typing in t
 
 Developed with ❤️ by **Gaidysheff**
 GitHub Profile
+
+---
+
+Licensed under the MIT License.
